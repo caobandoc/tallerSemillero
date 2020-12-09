@@ -2,11 +2,22 @@ package com.clearminds.caoc.bdd;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConexionBDD {
+import com.clearminds.caoc.excepciones.BDDException;
 
-	public static String leerPropiedad(String propiedad){
+public class ConexionBDD {
+	/**
+	 * Devuelve la propiedad a buscar
+	 * 
+	 * @param propiedad
+	 *            nombre de la propiedad
+	 * @return Devuelve un string, si no devuelve null
+	 */
+	public static String leerPropiedad(String propiedad) {
 		Properties p = new Properties();
 		try {
 			p.load(new FileReader("conexion.properties"));
@@ -14,6 +25,23 @@ public class ConexionBDD {
 		} catch (IOException e) {
 			return null;
 		}
-		 
+	}
+
+	/**
+	 * Conexion a la base de datos
+	 * 
+	 * @return devuelve Connection
+	 * @throws SQLException 
+	 */
+	public static Connection obtenerConexion() throws BDDException {
+		String user = leerPropiedad("usuario");
+		String pass = leerPropiedad("password");
+		String conexionURL = leerPropiedad("urlConexion") + ";" + "user=" + user + ";" + "password=" + pass + ";"
+				+ "loginTimeout=30;";
+		try {
+			return DriverManager.getConnection(conexionURL);
+		} catch (SQLException e) {
+			throw new BDDException("No se pudo conectar a la base de datos.");
+		}
 	}
 }
