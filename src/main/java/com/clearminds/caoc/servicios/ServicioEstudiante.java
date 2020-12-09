@@ -9,6 +9,14 @@ import com.clearminds.caoc.excepciones.BDDException;
 
 public class ServicioEstudiante extends ServicioBase {
 
+	/**
+	 * Inserta a la base de datos un estudiante
+	 * 
+	 * @param estudiante
+	 *            Recibe un estudiante
+	 * @throws BDDException
+	 *             Error al insertar estudiante
+	 */
 	public void insertarEstudiante(Estudiante estudiante) throws BDDException {
 		abrirConexion();
 		System.out.println("Insertando estudiante: " + estudiante.toString());
@@ -18,9 +26,9 @@ public class ServicioEstudiante extends ServicioBase {
 
 			String sql = "insert into estudiantes(nombre,apellido) values('" + estudiante.getNombre() + "','"
 					+ estudiante.getApellido() + "')";
-			
-			System.out.println("Script: "+sql);
-			
+
+			System.out.println("Script: " + sql);
+
 			stmt.executeUpdate(sql);
 			cerrarConexion();
 		} catch (SQLException e) {
@@ -28,5 +36,25 @@ public class ServicioEstudiante extends ServicioBase {
 			throw new BDDException("Error al insertar estudiante");
 		}
 
+	}
+
+	public void actualizarEstudiante(Estudiante estudiante) throws BDDException {
+		abrirConexion();
+		System.out.println("Actualiznado estudiante: " + estudiante.toString());
+		Statement stmt = null;
+		try {
+			stmt = ConexionBDD.obtenerConexion().createStatement();
+
+			String sql = "update estudiantes set nombre='" + estudiante.getNombre() + "', apellido='"
+					+ estudiante.getApellido() + "' where id=" + estudiante.getNumero();
+
+			System.out.println("Script: " + sql);
+
+			stmt.executeUpdate(sql);
+			cerrarConexion();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BDDException("Error al insertar estudiante");
+		}
 	}
 }
