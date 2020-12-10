@@ -8,7 +8,7 @@ public class TestActualizar {
 	public static void main(String[] args) {
 		ServicioEstudiante srvEstudiante = new ServicioEstudiante();
 		try {
-			srvEstudiante.actualizarEstudiante(new Estudiante("Carlos", "Obando",2));
+			srvEstudiante.actualizarEstudiante(new Estudiante("Carlos", "Obando",2,10));
 		} catch (BDDException e) {
 			e.printStackTrace();
 			e.getMessage();
